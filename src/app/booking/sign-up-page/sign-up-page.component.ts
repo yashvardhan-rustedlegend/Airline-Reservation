@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RestService } from 'src/app/rest.service';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -9,28 +8,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-up-page.component.css']
 })
 export class SignUpPageComponent {
-  public signupForm!:FormGroup;
-  constructor(private http:HttpClient, private router:Router, private formbuilder:FormBuilder ){}
-  ngOnInit(): void {
-    this.signupForm = this.formbuilder.group({
-      fullname: [''],
-      email: [''],
-      password: [''],
-      mobile: [''],
-    }
-    )
-  }
+  constructor(private restService : RestService , private router: Router) {}
 
-  signUp(){
-    this.http.post<any>("https://my-data-4hkn.onrender.com/signup", this.signupForm.value).subscribe( //signup credentials are stored for further login
-    res => { // Post Method is used 
-      alert("signup Sucessful");
-      this.signupForm.reset();
-      this.router.navigate(['/book/']);
-    },
-    err => {
-      alert("something went wrong");
-    }
-  )
+  
+  SigupStatus! : string;
+  username! : string;
+  password! : string;
+  name! : string;
+  contact! : number;
+
+  SignupObj = {
+    name     : this.name,
+    contact  : this.contact,
+    username : this.username,
+    password : this.password
+    
   }
+  signUp(){
+    this.restService.signUp(this.SignupObj).subscribe({
+      next : (data : string) => this.SigupStatus= data,
+      error : (err) => console.log(err)
+    })
+    if(this.SigupStatus === "true"){
+      console.log(this.SigupStatus);
+      this.router.navigate(['book/']);
+    }
+    else{
+      console.log("Re-Enter Full Data")
+    }
+    
+  }
+  
 }

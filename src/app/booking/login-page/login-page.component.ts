@@ -1,4 +1,5 @@
 import { Component ,OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { RestService } from 'src/app/rest.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { RestService } from 'src/app/rest.service';
 })
 export class LoginPageComponent {
 
-  constructor(private restService : RestService) {}
+  constructor(private restService : RestService, private router: Router) {}
 
   loginStatus! : string;
   username! : string;
@@ -24,7 +25,13 @@ export class LoginPageComponent {
       next : (data : string) => this.loginStatus = data,
       error : (err) => console.log(err)
     })
-    console.log(this.loginStatus);
+    if(this.loginStatus === "true"){
+      console.log(this.loginStatus);
+      this.router.navigate(['choose']);
+    }
+    else{
+      console.log("Re-Enter Full Data")
+    }
   }
 
 }

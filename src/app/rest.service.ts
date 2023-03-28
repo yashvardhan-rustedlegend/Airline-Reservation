@@ -18,4 +18,19 @@ export class RestService {
     const body = JSON.stringify(loginObj)
     return this.http.post(this.strUrl + '/login',body, { 'headers': headers, 'responseType': 'text' })
   }
+  signUp(SignupObj: any): Observable<any> {
+    const headers = { 'content-type': 'application/json' };
+  
+    const body = JSON.stringify(SignupObj)
+    return this.http.post(this.strUrl + '/signup',body, { 'headers': headers, 'responseType': 'text' })
+  }
+  submit(customerObj: any): Observable<any> {
+    const headers = { 'content-type': 'application/json' };
+  
+    const body = JSON.stringify(customerObj)
+    return this.http.post(this.strUrl + '/submit',body, { 'headers': headers, 'responseType': 'text' })
+  }
 }
+
+
+
